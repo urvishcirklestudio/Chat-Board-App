@@ -127,9 +127,6 @@ $(document).ready(function () {
             setTimeout(() => {
                 SendMessage(Math.floor(Math.random() * BOT_MSGS.length))
             }, 500);
-
-            // git add .;git commit -m "first commit";git push -u origin main
-            // git init;git add .;git add README.md;git commit -m "first commit";git branch -M main;git remote add origin https://github.com/urvishcirklestudio/Chat-Board-App.git;git push -u origin main
         }
     })
 })
