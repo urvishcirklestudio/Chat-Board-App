@@ -99,6 +99,7 @@ $(document).ready(function () {
 
     $('#say_Hii').click(function () {
         $(this).remove()
+        $('.chat_item_wpr').removeClass('d-none');
         $('#typing').removeClass('d-none')
         let send_message = `<div class="chat_item send_chat"><p>Hi, how are you?</p></div>`;
         $('.chat_item_wpr').append(`<div class="chat_item receive_chat"><p>Hii...</p></div>`);
@@ -112,6 +113,7 @@ $(document).ready(function () {
     $('.send_btn button').click(function () {
         if ($('#chat_input').val() !== '') {
             $('#say_Hii').remove();
+            $('.chat_item_wpr').removeClass('d-none');
             // console.log($(".chat_content").outerHeight());
             let send_message = `<div class="chat_item receive_chat"><p>${$('#chat_input').val()}</p></div>`;
             $('.chat_item_wpr').append(send_message); 
