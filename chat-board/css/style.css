@@ -165,13 +165,6 @@ html {
     background-color: #0000004f;
     opacity: 0.1;
 }
-.mobile_body{
-    width: 100%;
-    height: calc(100% - 60px);
-    --padding:10px 12px;
-/* backdrop-filter: blur(5.4px); */
-
-}
 
 .mobile_footer{
     height: 36px;
@@ -179,9 +172,36 @@ html {
     background-color: #0000004f;
     opacity: 0.1;
 }
+
+.mobile_body{
+  display: flex; 
+  width: 100%;
+  height: calc(100% - 60px);
+  --padding:10px 12px;
+  position: relative;
+/* backdrop-filter: blur(5.4px); */
+}
+.user_chat_container{
+  left: calc(100% + 10px);
+}
+.user_chat_container.show{
+  left: 0;
+}
+.user_list.show{
+  left: 0;
+}
+.user_list{
+  left: -102%;
+}
+
 .user_chat_container,
 .user_list{
+  position: absolute;
     height: 100%;
+    width: 100%;
+    min-width: 100%;
+    white-space: nowrap;
+    transition: 0.3s;
 }
 .app_heading{
     height: 40px;
@@ -226,13 +246,13 @@ html {
 .user_items:not(:last-child){
     border-bottom: 1px solid #ffd1a3;
 }
-.user_items{
-    border-bottom: 1px solid #ffd1a3; 
+.user_items{ 
     padding: var(--padding);
     display: grid;
     grid-template-columns: 34px auto 50px;
     gap: 10px;
     align-items: center;
+    cursor: pointer;
 }
 
 .user_image{
@@ -345,10 +365,7 @@ background: linear-gradient(270deg, #ffe0c1 0%, #ffebd9 100%);
 
 }
 
-.chat_content:has(#say_Hii) {
-    display: grid;
-    place-items: center;
-  }
+ 
 
   #say_Hii{
     padding: 10px 30px;
@@ -356,11 +373,20 @@ background: linear-gradient(270deg, #ffe0c1 0%, #ffebd9 100%);
 background: linear-gradient(90deg, rgba(255,194,133,1) 0%, rgba(255,215,175,1) 100%);
 border-radius: 5px;
     color: #37272A;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
   }
 
 #typing{
     font-size: 10px;
     position: absolute;
-    bottom: 1px;
+    bottom: 52px;
     left: 12px;
 }
+
+.chat_item_wpr{
+  white-space: normal;
+}
+

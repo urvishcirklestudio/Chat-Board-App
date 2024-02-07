@@ -20,7 +20,7 @@ let UserList = [
     }, {
         id: 5,
         Name: 'Zig Wagon',
-        Thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3flIHsvZtK3eU7tEnp-LSEjNznTZCn0dkcA&usqp=CAU', 
+        Thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3flIHsvZtK3eU7tEnp-LSEjNznTZCn0dkcA&usqp=CAU',
     }, {
         id: 6,
         Name: 'Droolbug',
@@ -64,13 +64,6 @@ let UserList = [
     }
 ]
 
-const BOT_MSGS = [
-    "Ohh... I can't understand what you trying to say. Sorry!",
-    "I like to play games... But I don't know how to play!",
-    "Sorry if my answers are not relevant. :))",
-    "I feel sleepy! :("
-];
-
 
 UserList.forEach(({ id, Name, Thumbnail }, index) => {
     const User_Items = `<li class="user_items" data-User-Id="${index}" onclick="UserClickd(${index})"><div class="user_image"><img src="${Thumbnail}" alt="" class="image_cover"></div><div class="name_message"><h5 class="name">${Name}</h5><p class="message">message</p></div></li>`
@@ -78,105 +71,104 @@ UserList.forEach(({ id, Name, Thumbnail }, index) => {
 });
 
 function UserChatShow(UserId) {
-    $('.chat_item_wpr').empty();
-    UserListLocal = GetLocalchat('UserData'); 
-    if (UserListLocal[UserId].message) {
-        UserListLocal[UserId].message.map((items, index) => {
-            let Message = `<div class="chat_item ${items.Status}"><p>${items.Text}</p></div>`
-            $('.chat_item_wpr').append(Message);
-        })
-        let scrollVal = $(".chat_item_wpr").outerHeight();
-        $(".chat_content").animate({ scrollTop: scrollVal }, 'slow');
-    } else {
-        console.log('false');
-    }
-
-}
-
-function AddMessage(userID, Text, Status) { 
     UserListLocal = GetLocalchat('UserData');
-    let newObj = { Text, Status }
-    let newData = UserListLocal.map((items, index) => {
-        if (userID === index) {
-            if (items.message) {
-                return {
-                    ...items,
-                    message: [...items.message, newObj]
-                };
-            } else {
+    console.log(UserListLocal[UserId]);
+    // if (UserListLocal[UserId].message) {
+    //     UserListLocal[UserId].message.map((items, index) => {
+    //         let Message = `<div class="chat_item receive_chat"><p>${items.Text}</p></div>`
+    //         $('.chat_item_wpr').append(Message);
+    //     })
+    // } else {
+    //     console.log('false');
+    // }
 
-                return { ...items, message: [newObj] }
-            }
-        }
-        return items
-    })
-    return newData;
 }
+
+const BOT_MSGS = [
+    "Ohh... I can't understand what you trying to say. Sorry!",
+    "I like to play games... But I don't know how to play!",
+    "Sorry if my answers are not relevant. :))",
+    "I feel sleepy! :("
+];
 
 function UserClickd(UserId) {
     $('.user_list').removeClass('show');
     $('.user_chat_container').addClass('show');
     $('#userName').text(UserList[UserId].Name)
-    $('#userName').attr('data-User-Id', UserId) 
-    var UserListLocal = GetLocalchat('UserData');
-    if (UserListLocal.length === 0) {
-        SaveLocalChat('UserData', UserList);
-    } else {
-        if (!UserListLocal[UserId].message) {
-            $('#say_Hii').removeClass('d-none');
-            $('.chat_item_wpr').addClass('d-none');
-        } else {
-            $('#say_Hii').addClass('d-none');
-            $('.chat_item_wpr').removeClass('d-none');
-        }
-        SaveLocalChat('UserData', UserListLocal);
-    }
-    UserChatShow(UserId);
+    $('#userName').attr('data-User-Id', UserId)
+    // console.log(UserList[UserId].message !== undefined);
+    UserList = GetLocalchat('UserData')
+    // UserChatShow(UserId)
+    if (!UserList[UserId].message) {
+        $('#say_Hii').removeClass('d-none');
+        $('.chat_item_wpr').addClass('d-none');
 
+    } else {
+        $('#say_Hii').addClass('d-none');
+        $('.chat_item_wpr').removeClass('d-none');
+
+    }
 }
 
 function BackClicked(UserId) {
     $('.user_list').addClass('show');
     $('.user_chat_container').removeClass('show');
     $('#userName').text('')
-    $('#say_Hii').removeClass('d-none');
+}
+
+
+const SendMessage = (num) => {
+    $('#typing').addClass('d-none')
+    let receive_message = `<div class="chat_item send_chat"><p>${BOT_MSGS[num]}</p></div>`;
+    $('.chat_item_wpr').append(receive_message);
+}
+
+function AddMessage(Text, Status) {
+    let newObj = { Text, Status }
+    let newData = UserList.map((items, index) => {
+        if (Number(userID) === index) {
+            return { ...items, message: [newObj] }
+        }
+        return items
+    })
+    return newData;
 }
 
 $('#say_Hii').click(function () {
     const userID = $('#userName').attr('data-User-Id')
-    $(this).addClass('d-none');
+    $(this).remove()
     $('.chat_item_wpr').removeClass('d-none');
     $('#typing').removeClass('d-none')
-    SaveLocalChat('UserData', AddMessage(Number(userID), 'Hii', 'receive_chat'));
-    UserChatShow(Number(userID));
+    // let send_message = `<div class="chat_item send_chat"><p>Hi, how are you?</p></div>`;
+    // $('.chat_item_wpr').append(`<div class="chat_item receive_chat"><p>Hii...</p></div>`);
+    console.log(AddMessage('Hii', 'receive_chat'));
+    SaveLocalChat('UserData', AddMessage('Hii', 'receive_chat'));
+    UserChatShow();
     setTimeout(() => {
-        SaveLocalChat('UserData', AddMessage(Number(userID), 'Hi, how are you?', 'send_chat'));
-        UserChatShow(Number(userID));
+        SaveLocalChat('UserData', AddMessage('Hi, how are you?', 'send_chat'));
+        UserChatShow();
+
         $('#typing').addClass('d-none')
     }, 500);
 })
 
-const SendMessage = (userID,UniqueNum) => {
-    $('#typing').addClass('d-none') 
-    SaveLocalChat('UserData', AddMessage(Number(userID), BOT_MSGS[UniqueNum], 'send_chat'));
-        UserChatShow(Number(userID));
-}
 
 $('.send_btn button').click(function () {
     if ($('#chat_input').val() !== '') {
-        $('#say_Hii').addClass('d-none')
-        const userID = $('#userName').attr('data-User-Id')
-        $('.chat_item_wpr').removeClass('d-none'); 
-        SaveLocalChat('UserData', AddMessage(Number(userID), $('#chat_input').val(), 'receive_chat'));
-        UserChatShow(Number(userID));
-
+        $('#say_Hii').remove();
+        $('.chat_item_wpr').removeClass('d-none');
+        // console.log($(".chat_content").outerHeight());
+        let send_message = `<div class="chat_item receive_chat"><p>${$('#chat_input').val()}</p></div>`;
+        $('.chat_item_wpr').append(send_message);
         $('#chat_input').val('');
         $('#typing').removeClass('d-none')
 
-        
+
+        let scrollVal = $(".chat_item_wpr").outerHeight();
+        $(".chat_content").animate({ scrollTop: scrollVal }, 'slow');
 
         setTimeout(() => {
-            SendMessage(userID,Math.floor(Math.random() * BOT_MSGS.length))
+            SendMessage(Math.floor(Math.random() * BOT_MSGS.length))
         }, 500);
     }
 })
