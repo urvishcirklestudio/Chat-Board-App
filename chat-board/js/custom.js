@@ -71,6 +71,13 @@ const BOT_MSGS = [
     "I feel sleepy! :("
 ];
 
+var clockElement = document.getElementById('clock');
+function clock() {
+  clockElement.textContent = new Date().toLocaleTimeString("en-US", { hour12: false, hour: 'numeric', minute: 'numeric' });
+}
+
+setInterval(clock, 1000);
+
 
 UserList.forEach(({ id, Name, Thumbnail }, index) => {
     const User_Items = `<li class="user_items" data-User-Id="${index}" onclick="UserClickd(${index})"><div class="user_image"><img src="${Thumbnail}" alt="" class="image_cover"></div><div class="name_message"><h5 class="name">${Name}</h5><p class="message">message</p></div></li>`
